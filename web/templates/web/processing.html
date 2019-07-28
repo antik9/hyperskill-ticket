@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+
+<title>Processing</title>
+{% if ticket %}
+<h2>Next ticket</h2>
+<div>Processing ticket #{{ ticket.number }}</div>
+<div>Level {{ urgency }}</div>
+<div>{{ ticket.message }}</div>
+{% else %}
+<h2>No tickets left</h2>
+{% endif %}
