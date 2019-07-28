@@ -25,7 +25,7 @@ SECRET_KEY = 'pr-)=*7-o#p!f+8zdt4au!9lo)2&bk&^uz8(rku3ks381u#9)c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['hyperskill-ticket.herokuapp.com']
+ALLOWED_HOSTS = ['hyperskill-ticket.herokuapp.com', 'localhost']
 
 
 # Application definition
