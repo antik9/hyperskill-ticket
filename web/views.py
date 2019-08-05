@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass
+from datetime import datetime
 from heapq import heappush, heappop, nsmallest
 from typing import List, Tuple, Dict
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.http.response import HttpResponse
 from django.core.handlers.wsgi import WSGIRequest
 
 URGENCY_LEVEL = dict([(1, 'Urgent'), (2, 'Normal'), (3, 'Lazy')])
 AVERAGE_PROCESSING_TIME = 1
 next_number = 1
+processed = 0
+revoked = 0
 
 @dataclass(order=True)
 class Ticket:
@@ -46,18 +49,35 @@ def get_ticket_page(request: WSGIRequest, level: int, *args, **kwargs) -> HttpRe
     clients_before = sum(queues_size[l] for l in queues_size if l <= level) - 1
     return render(
         request, 'web/ticket.html',
-        context={'ticket': ticket, 'time_to_wait': clients_before * AVERAGE_PROCESSING_TIME}
+        context={
+            'ticket': ticket,
+            'time_to_wait': clients_before * AVERAGE_PROCESSING_TIME,
+            'current_time': datetime.now(),
+        }
     )
 
 
 def process_next_ticket(request: WSGIRequest, *args, **kwargs) -> HttpResponse:
-    global queues_size, ticket_queue
-    ticket = heappop(ticket_queue) if ticket_queue else None
+    global queues_size, ticket_queue, processed, revoked
+
+    ticket = nsmallest(1, ticket_queue)[0] if ticket_queue else None
     urgency = None
     if ticket:
         urgency = URGENCY_LEVEL[ticket.level]
+
+    if request.method == 'POST':
+        if request.POST.get('action') == 'process':
+            processed += 1
+        elif request.POST.get('action') == 'revoke':
+            revoked += 1
+        heappop(ticket_queue) if ticket_queue else None
         queues_size[ticket.level] -= 1
+        return redirect(reverse('processing'))
+
     return render(
         request, 'web/processing.html',
-        context={'ticket': ticket, 'urgency': urgency}
+        context={
+            'ticket': ticket, 'urgency': urgency,
+            'processed': processed, 'revoked': revoked
+        }
     )

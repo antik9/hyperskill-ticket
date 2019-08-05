@@ -1,7 +1,13 @@
 <!DOCTYPE html>
+{% load humanize %}
 
 <title>Ticket</title>
 <div><a href="{% url 'main' %}">Return to main page</a></div>
 <h2>Get your ticket</h2>
-<div>Your number is {{ ticket.number }}</div>
-<div>Please wait around {{ time_to_wait }} minutes </div>
+<table>
+<tbody>
+    <tr><td>Your number</td><td>{{ ticket.number }}</td></tr>
+    <tr><td>Current time</td><td>{{ current_time|date:'H:m:s' }}</td></tr>
+    <tr><td>Please wait around</td><td>{{ time_to_wait }} minutes</td></tr>
+</tbody>
+</table>
