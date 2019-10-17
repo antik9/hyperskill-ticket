@@ -5,8 +5,8 @@
 
 <div>Choose an urgency of a problem</div>
 <ul>
-    {% for level, text in levels.items %}
-    <li><a href="ticket/{{ level }}/">{{ text }}</a></li>
+    {% for service, description in description.items %}
+    <li><a href="/get_ticket/{{ service }}">{{ description }}</a></li>
     {% endfor %}
 </ul>
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <title>Ticket</title>
-<div><a href="{% url 'main' %}">Return to main page</a></div>
+<div><a href="{% url 'menu' %}">Return to main page</a></div>
 <h2>Get your ticket</h2>
 <table>
 <tbody>
     <tr><td>Your number</td><td>{{ ticket.number }}</td></tr>
     <tr><td>Current time</td><td>{{ current_time|date:'H:m:s' }}</td></tr>
-    <tr><td>Please wait around</td><td>{{ time_to_wait }} minutes</td></tr>
+    <tr><td>Please wait around {{ time_to_wait }} minutes</td></tr>
 </tbody>
 </table>

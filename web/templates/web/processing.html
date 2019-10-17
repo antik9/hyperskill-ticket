@@ -1,28 +1,9 @@
 <!DOCTYPE html>
-
 <title>Processing</title>
-{% if ticket %}
-<h2>Next ticket</h2>
-<div>Processing ticket #{{ ticket.number }}</div>
-<div>Level {{ urgency }}</div>
-<div>{{ ticket.message }}</div>
+<div>Change oil queue: {{ change_oil_left }}</div>
+<div>Inflate tires queue: {{ inflate_tires_left }}</div>
+<div>Make diagnostics queue: {{ make_diagnostics_left }}</div><br/>
 
-<table>
-<tbody>
-    <tr>
-        <form method="post">{% csrf_token %}
-        <td>
-            <button name="action" value="process" type="submit">Process</button>
-        </td>
-        <td>
-            <button name="action" value="revoke" type="submit">Revoke</button>
-        </td>
-    </tr>
-</tbody>
-</table>
-{% else %}
-<h2>No tickets left</h2>
-{% endif %}
-
-<br/>
-<div>{{ processed }} processed, {{ revoked }} revoked</div>
+<form method="post">{% csrf_token %}
+    <button name="action" value="process" type="submit">Process next</button>
+</form>

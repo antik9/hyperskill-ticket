@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.urls import path, re_path
 
-from web.views import get_index_page, get_main_page, get_ticket_page, process_next_ticket
+from web.views import (
+    IndexView,
+    MenuView,
+    NextTicketView,
+    ProcessingView,
+    TicketPageView,
+)
 
 urlpatterns = [
-    path('main', get_main_page, name='main'),
-    path('processing', process_next_ticket, name='processing'),
-    re_path('ticket/(?P<level>\d)', get_ticket_page, name='get_ticket'),
-    path('', get_index_page, name='index'),
+    path('menu', MenuView.as_view(), name='menu'),
+    path('next', NextTicketView.as_view(), name='next_ticket'),
+    path('processing', ProcessingView.as_view(), name='processing'),
+    re_path('get_ticket/(?P<service>.*)', TicketPageView.as_view(), name='get_ticket'),
+    path('welcome', IndexView.as_view(), name='index'),
 ]
